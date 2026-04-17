@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/WhiteheadL/pininspired/issues"
   },
-  "homepage": "https://github.com/WhiteheadL/pininspired#readme"
+  "homepage": "https://github.com/WhiteheadL/pininspired#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
