@@ -1,0 +1,24 @@
+{
+  "name": "pininspired",
+  "version": "0.1.0",
+  "description": "A Pinterest-inspired photo sharing app - First full-stack portfolio project.\r I'm building to learn full-stack web development from the ground up.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WhiteheadL/pininspired.git"
+  },
+  "keywords": [],
+  "author": "Luke Whitehead",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/WhiteheadL/pininspired/issues"
+  },
+  "homepage": "https://github.com/WhiteheadL/pininspired#readme"
+}
