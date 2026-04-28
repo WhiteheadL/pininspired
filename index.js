@@ -2,6 +2,8 @@ const express = require('express');
 
 const requireAuth = require('./middleware/auth');
 
+const jwt = require('jsonwebtoken');
+
 const app = express();
 
 const db = require('./db');
@@ -55,6 +57,53 @@ app.post('/api/signup', async (req, res) => {
 
     } catch (err) {
         console.error('Signup error:', err);
+        res.status(500).json({ error: 'Internal server error.' });
+    }
+});
+
+//login endpoint
+app.post('/api/login', async (req, res) => {
+    try {
+        const { username, password } = req.body;
+        
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Username and password are required.' });
+        }
+
+        //looking up user byy username
+        const result = await db.query(
+            'SELECT id, username, password_hash FROM users WHERE username = $1',
+            [username]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(401).json({ error: 'Invalid username or password.' });
+        }
+
+        const user = result.rows[0];
+
+        //compare passowords
+        const passwordMatches = await bcrypt.compare(password, user.password_hash);
+
+        if (!passwordMatches) {
+            return res.status(401).json({ error: 'Invalid username or password.' });
+        }
+        const token = jwt.sign(
+            { userId: user.id },
+            process.env.JWT_SECRET,
+            { expiresIn: '7d' }
+        );
+        //sending tokens back
+        res.json({
+            token,
+            user: {
+                id: user.id,
+                username: user.username,
+            },
+        });
+
+    } catch (err) {
+        console.error('Login error:', err);
         res.status(500).json({ error: 'Internal server error.' });
     }
 });
