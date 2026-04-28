@@ -1,5 +1,7 @@
 const express = require('express');
 
+const requireAuth = require('./middleware/auth');
+
 const app = express();
 
 const db = require('./db');
@@ -53,6 +55,25 @@ app.post('/api/signup', async (req, res) => {
 
     } catch (err) {
         console.error('Signup error:', err);
+        res.status(500).json({ error: 'Internal server error.' });
+    }
+});
+
+//testing protected endpoint
+app.get('/api/me', requireAuth, async (req, res) => {
+    try {
+        const result = await db.query(
+            'SELECT id, username, email, created_at FROM users WHERE id = $1',
+            [req.userId]
+        );
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ error: 'User not found.' });
+        }
+
+        res.json({ user: result.rows[0] });
+    } catch (err) {
+        console.error('Error fetching user:', err);
         res.status(500).json({ error: 'Internal server error.' });
     }
 });
