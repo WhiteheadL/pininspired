@@ -1,22 +1,14 @@
 const express = require('express');
-
 const requireAuth = require('./middleware/auth');
-
 const jwt = require('jsonwebtoken');
-
 const app = express();
-
 const db = require('./db');
-
 const bcrypt = require('bcrypt');
 
 app.use(express.json());
+app.use(express.static('public'));
 
 const PORT = 3000;
-
-app.get('/', (req, res) => {
-    res.send('Hello from Pininspired');
-});
 
 //signup endpoint
 app.post('/api/signup', async (req, res) => {
